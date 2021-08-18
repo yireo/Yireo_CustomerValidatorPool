@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Yireo\CustomerValidatorPool\Validator\CustomerValidatorPool">
+        <arguments>
+            <argument name="customerValidators" xsi:type="array">
+                <item name="first-name-length" xsi:type="object">Yireo\CustomerValidatorPool\Validator\CustomerFirstNameLengthValidator</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\CustomerValidatorPool\Validator\CustomerFirstNameLengthValidator">
+        <arguments>
+            <argument name="minimumLength" xsi:type="number">3</argument>
+        </arguments>
+    </type>
+</config>
