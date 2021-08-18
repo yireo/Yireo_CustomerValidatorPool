@@ -10,7 +10,7 @@
 
     <type name="Yireo\CustomerValidatorPool\Validator\CustomerFirstNameLengthValidator">
         <arguments>
-            <argument name="minimumLength" xsi:type="number">3</argument>
+            <argument name="minimumLength" xsi:type="number">1</argument>
         </arguments>
     </type>
 </config>
