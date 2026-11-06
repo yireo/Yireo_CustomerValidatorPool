@@ -1,1 +1,7 @@
-{}
+{
+    "module_name": "Yireo_CustomerValidatorPool",
+    "composer_name": "yireo/customer-validator-pool",
+    "sequence": [
+        "Magento_Customer"
+    ]
+}
