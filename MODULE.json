@@ -3,5 +3,7 @@
     "composer_name": "yireo/customer-validator-pool",
     "sequence": [
         "Magento_Customer"
-    ]
+    ],
+    "phpcs_severity": "7",
+    "phpstan_level": "9"
 }
