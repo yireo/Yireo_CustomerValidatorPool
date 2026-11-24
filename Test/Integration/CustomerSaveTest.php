@@ -11,6 +11,7 @@ use Magento\Framework\Validator\Exception as ValidatorException;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Yireo\CustomerValidatorPool\Observer\AddValidatorPool;
 use Yireo\CustomerValidatorPool\Validator\CustomerFirstNameLengthValidator;
 use Yireo\CustomerValidatorPool\Validator\CustomerValidatorPool;
@@ -59,9 +60,9 @@ class CustomerSaveTest extends TestCase
         $customer = $this->getAccountManagement()->createAccount($this->getNewCustomer('Jan'), self::PASSWORD);
         $this->setMinimumLength(5);
 
-        $accountManagement = $this->objectManager->get(AccountManagement::class);
+        $accountManagement = $this->get(AccountManagement::class);
         $token = 'abcdefghijklmnopqrstuvwxyz012345';
-        $customer = $this->objectManager->get(CustomerRepositoryInterface::class)->getById((int)$customer->getId());
+        $customer = $this->get(CustomerRepositoryInterface::class)->getById((int)$customer->getId());
         $this->assertTrue($accountManagement->changeResetPasswordLinkToken($customer, $token));
         $this->assertTrue($accountManagement->resetPassword(
             (string)$customer->getEmail(),
@@ -75,7 +76,7 @@ class CustomerSaveTest extends TestCase
         $customer = $this->getAccountManagement()->createAccount($this->getNewCustomer('Jan'), self::PASSWORD);
         $this->setMinimumLength(5);
 
-        $customerRepository = $this->objectManager->get(CustomerRepositoryInterface::class);
+        $customerRepository = $this->get(CustomerRepositoryInterface::class);
         $customer = $customerRepository->getById((int)$customer->getId());
         $customer->setLastname('Changed');
 
@@ -93,14 +94,29 @@ class CustomerSaveTest extends TestCase
         $this->objectManager->addSharedInstance(new AddValidatorPool($pool), AddValidatorPool::class);
     }
 
+    /**
+     * @template T of object
+     * @param class-string<T> $className
+     * @return T
+     */
+    private function get(string $className): object
+    {
+        $object = $this->objectManager->get($className);
+        if (!$object instanceof $className) {
+            throw new RuntimeException('Unable to instantiate ' . $className);
+        }
+
+        return $object;
+    }
+
     private function getAccountManagement(): AccountManagementInterface
     {
-        return $this->objectManager->get(AccountManagementInterface::class);
+        return $this->get(AccountManagementInterface::class);
     }
 
     private function getNewCustomer(string $firstName): CustomerInterface
     {
-        $customer = $this->objectManager->get(CustomerInterfaceFactory::class)->create();
+        $customer = $this->get(CustomerInterfaceFactory::class)->create();
         $customer->setFirstname($firstName);
         $customer->setLastname('Doe');
         $customer->setEmail('validator-pool-' . uniqid() . '@example.com');

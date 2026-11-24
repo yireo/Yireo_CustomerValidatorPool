@@ -20,18 +20,26 @@ class ModuleTest extends AbstractTestCase
     public function testIfObserverIsRegistered(): void
     {
         $eventConfig = Bootstrap::getObjectManager()->get(ConfigInterface::class);
+        if (!$eventConfig instanceof ConfigInterface) {
+            $this->fail('Unable to instantiate ' . ConfigInterface::class);
+        }
+
         $observers = $eventConfig->getObservers('customer_save_before');
 
         $this->assertArrayHasKey('customer_save_before_validator_pool', $observers);
-        $this->assertSame(
-            AddValidatorPool::class,
-            ltrim($observers['customer_save_before_validator_pool']['instance'], '\\')
+        $this->assertContains(
+            $observers['customer_save_before_validator_pool']['instance'],
+            [AddValidatorPool::class, '\\' . AddValidatorPool::class]
         );
     }
 
     public function testIfPoolContainsDefaultValidator(): void
     {
         $pool = Bootstrap::getObjectManager()->get(CustomerValidatorPool::class);
+        if (!$pool instanceof CustomerValidatorPool) {
+            $this->fail('Unable to instantiate ' . CustomerValidatorPool::class);
+        }
+
         $validators = $pool->getValidators();
 
         $this->assertArrayHasKey('first-name-length', $validators);

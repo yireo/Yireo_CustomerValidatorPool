@@ -2,7 +2,6 @@
 
 namespace Yireo\CustomerValidatorPool\Observer;
 
-use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Model\Customer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -34,9 +33,6 @@ class AddValidatorPool implements ObserverInterface
         }
 
         $customer = $customerModel->getDataModel();
-        if (!$customer instanceof CustomerInterface) {
-            return;
-        }
 
         foreach ($this->customerValidatorPool->getValidators() as $customerValidator) {
             $customerValidator->validate($customer);
