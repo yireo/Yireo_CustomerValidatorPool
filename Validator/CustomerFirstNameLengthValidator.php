@@ -8,17 +8,11 @@ use Magento\Framework\Validator\Exception;
 class CustomerFirstNameLengthValidator implements CustomerValidatorInterface
 {
     /**
-     * @var int
-     */
-    private $minimumLength;
-
-    /**
      * @param int $minimumLength
      */
     public function __construct(
-        int $minimumLength = 0
+        private readonly int $minimumLength = 0
     ) {
-        $this->minimumLength = $minimumLength;
     }
 
     /**
@@ -28,11 +22,9 @@ class CustomerFirstNameLengthValidator implements CustomerValidatorInterface
      */
     public function validate(CustomerInterface $customer): bool
     {
-        if (strlen($customer->getFirstname()) < $this->minimumLength) {
+        if (mb_strlen((string)$customer->getFirstname()) < $this->minimumLength) {
             throw new Exception(
-                __('First name "%1" should be %2 or more characters',
-                    $customer->getFirstname(),
-                    $this->minimumLength)
+                __('First name should be %1 or more characters', $this->minimumLength)
             );
         }
 
