@@ -2,20 +2,31 @@
 
 namespace Yireo\CustomerValidatorPool\Validator;
 
+use InvalidArgumentException;
+
 class CustomerValidatorPool
 {
     /**
      * @var CustomerValidatorInterface[]
      */
-    private $customerValidators;
+    private array $customerValidators = [];
 
     /**
-     * @param CustomerValidatorInterface[] $customerValidators
+     * @param array<string|int, mixed> $customerValidators
+     * @throws InvalidArgumentException
      */
     public function __construct(
         array $customerValidators = []
     ) {
-        $this->customerValidators = $customerValidators;
+        foreach ($customerValidators as $name => $customerValidator) {
+            if (!$customerValidator instanceof CustomerValidatorInterface) {
+                throw new InvalidArgumentException(
+                    'Customer validator "' . $name . '" does not implement ' . CustomerValidatorInterface::class
+                );
+            }
+
+            $this->customerValidators[$name] = $customerValidator;
+        }
     }
 
     /**
