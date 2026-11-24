@@ -3,6 +3,7 @@
 namespace Yireo\CustomerValidatorPool\Observer;
 
 use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Customer\Model\Customer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Yireo\CustomerValidatorPool\Validator\CustomerValidatorPool;
@@ -10,26 +11,25 @@ use Yireo\CustomerValidatorPool\Validator\CustomerValidatorPool;
 class AddValidatorPool implements ObserverInterface
 {
     /**
-     * @var CustomerValidatorPool
-     */
-    private $customerValidatorPool;
-
-    /**
      * @param CustomerValidatorPool $customerValidatorPool
      */
     public function __construct(
-        CustomerValidatorPool $customerValidatorPool
+        private readonly CustomerValidatorPool $customerValidatorPool
     ) {
-        $this->customerValidatorPool = $customerValidatorPool;
     }
 
     /**
      * @param Observer $observer
+     * @return void
      */
     public function execute(Observer $observer)
     {
-        $customerModel = $observer->getEvent()->getCustomer();
-        if (!$customerModel) {
+        $customerModel = $observer->getEvent()->getData('customer');
+        if (!$customerModel instanceof Customer) {
+            return;
+        }
+
+        if ($customerModel->getData('ignore_validation_flag')) {
             return;
         }
 
