@@ -1,4 +1,16 @@
 # Customer validator pool
+
+<!-- badges.specs.start -->
+<div class="github-specs-badges">
+
+![Magento version](https://img.shields.io/badge/Magento-2.4.6%20%7C%202.4.9-orange)
+![PHP version](https://img.shields.io/badge/PHP-8.2%E2%80%938.5-777BB4)
+![License](https://img.shields.io/badge/License-OSL--3.0-blue)
+![Latest Version](https://img.shields.io/packagist/v/yireo/customer-validator-pool)
+
+</div>
+<!-- badges.specs.end -->
+
 While Magento makes it easy (?) to validate customer fields in the frontend (for instance, by using the XML layout or JavaScript validators), on the PHP-side, there is no architecture for this. Fair enough, you can just use events or DI plugins for this. However, this module introduces the concept of a pool of validator classes, which can easily be added via XML.
 
 For this to work, you would create a new class that implements `Yireo\CustomerValidatorPool\Validator\CustomerValidatorInterface`:
@@ -70,3 +82,17 @@ This pool is meant for data quality, not as a security control: it is bypassed b
 
 ### Todo
 - Create configuration values in Store Configuration to easily adjust parameters
+
+## Current status
+
+<!-- badges.test.start -->
+<div class="github-pipeline-badges">
+
+![Static Tests](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_CustomerValidatorPool/static-tests.yml?label=static-tests)
+![Unit Tests](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_CustomerValidatorPool/unit-tests.yml?label=unit-tests)
+![Integration Tests](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_CustomerValidatorPool/integration-tests.yml?label=integration-tests)
+![Playwright](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_CustomerValidatorPool/playwright.yml?label=playwright)
+![DI Compilation](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_CustomerValidatorPool/compile.yml?label=compile)
+
+</div>
+<!-- badges.test.end -->
